@@ -1,3 +1,4 @@
 *.ipynb
 *.ipynb_checkpoints
 all_inputs.py
+__pycache__/all_inputs.cpython-37.pyc
