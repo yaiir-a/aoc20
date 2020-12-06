@@ -17,3 +17,7 @@ for group in inp:
     total_answer += sum(group[question] == num_people for question in group)
 
 print(total_answer)
+
+one_liner = sum(sum(Counter(group)[q] == Counter(group)['\n']+1 for q in Counter(group)) for group in inp)
+print(one_liner)
+
