@@ -33,9 +33,11 @@ part_1
 ### part 2 ###
 
 bags = inp['shiny gold ']
+total = 0
 
 for n, i_colour in bags:
     bags += n * inp[i_colour]
+    total += n
 
-part_2 = sum((b[0]) for b in bags)
+part_2 = total
 part_2
