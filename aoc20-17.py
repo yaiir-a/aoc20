@@ -38,7 +38,7 @@ def get_neighbors(pos):
     return out
     
 
-def active_and_neighbors(active_cubes):
+def get_potentially_active(active_cubes):
     with_neighbors = set()
     for cube in active_cubes:
         with_neighbors.add(cube)
@@ -57,7 +57,7 @@ def count_active_neighbors(cube):
         
 
 def cycle(active_cubes):
-    potentially_active = active_and_neighbors(active_cubes)
+    potentially_active = get_potentially_active(active_cubes)
     new_active_cubes = set()
     for pa_cube in potentially_active:
         cube_active = pa_cube in active_cubes
@@ -103,7 +103,7 @@ def get_neighbors2(pos):
     return out
     
 
-def active_and_neighbors2(active_cubes):
+def get_potentially_active2(active_cubes):
     with_neighbors = set()
     for cube in active_cubes:
         with_neighbors.add(cube)
@@ -121,7 +121,7 @@ def count_active_neighbors2(cube):
         
 
 def cycle2(active_cubes):
-    potentially_active = active_and_neighbors2(active_cubes)
+    potentially_active = get_potentially_active2(active_cubes)
     new_active_cubes = set()
     for pa_cube in potentially_active:
         cube_active = pa_cube in active_cubes
