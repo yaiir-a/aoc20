@@ -1,29 +1,6 @@
 from all_inputs import day_24
 from _collections import defaultdict
 
-t_inp = """sesenwnenenewseeswwswswwnenewsewsw
-neeenesenwnwwswnenewnwwsewnenwseswesw
-seswneswswsenwwnwse
-nwnwneseeswswnenewneswwnewseswneseene
-swweswneswnenwsewnwneneseenw
-eesenwseswswnenwswnwnwsewwnwsene
-sewnenenenesenwsewnenwwwse
-wenwwweseeeweswwwnwwe
-wsweesenenewnwwnwsenewsenwwsesesenwne
-neeswseenwwswnwswswnw
-nenwswwsewswnenenewsenwsenwnesesenew
-enewnwewneswsewnwswenweswnenwsenwsw
-sweneswneswneneenwnewenewwneswswnese
-swwesenesewenwneswnwwneseswwne
-enesenwswwswneneswsenwnewswseenwsese
-wnwnesenesenenwwnenwsewesewsesesew
-nenewswnwewswnenesenwnesewesw
-eneswnwswnwsenenwnwnwwseeswneewsenese
-neswnwewnwnwseenwseesewsenwsweewe
-wseweeenwnesenwwwswnew"""
-
-t_inp_min = "nwwswee"
-
 
 def parse_line(line):
     i = 0
@@ -47,10 +24,6 @@ def parse(r_inp):
     for line in lines:
         out += [parse_line(line)]
     return out
-
-
-
-
 
 
 def move(coord, inst):
@@ -96,19 +69,13 @@ def get_black(inp):
     return blacks
 
 
-inp = t_inp
-# inp = t_inp_min
 inp = day_24
-
-
-
 inp = parse(inp)
+active_cubes = get_black(inp)
+print(f'Part 1: {len(active_cubes)}')
 
-black_tiles = get_black(inp)
-print(f'Part 1: {len(black_tiles)}')
 
-
-def get_neighbors(tile):
+def get_neighbors(tile):  # Changed from Day 17
     x, y, z = tile
     neighbors = [
         (1, -1, 0),
@@ -123,39 +90,37 @@ def get_neighbors(tile):
         out += [(x+xo, y+yo, z+zo)]
     return out
 
+def get_potentially_active(active_cubes):
+    with_neighbors = set()
+    for cube in active_cubes:
+        with_neighbors.add(cube)
+        for neighbor in get_neighbors(cube):
+            with_neighbors.add(neighbor)
+    return with_neighbors
 
-def get_potentially_active(black_tiles):
-    potentially_active = set()
-    for tile in black_tiles:
-        potentially_active.add(tile)
-        for neighbor in get_neighbors(tile):
-            potentially_active.add(neighbor)
-    return potentially_active
 
-
-def count_active_neighbors(tile):
+def count_active_neighbors(cube):
     active_neighbors = 0
-    for neighbor in get_neighbors(tile):
-        if neighbor in black_tiles:
+    for neighbor in get_neighbors(cube):
+        if neighbor in active_cubes:
             active_neighbors += 1
     return active_neighbors
 
 
-def cycle(black_tiles):
-    potentially_active = get_potentially_active(black_tiles)
-    new_active_tiles = set()
-    for pa_tile in potentially_active:
-        tile_active = pa_tile in black_tiles
-        neighbors_active = count_active_neighbors(pa_tile)
-
-        if tile_active and neighbors_active in (1, 2):
-            new_active_tiles.add(pa_tile)
-        elif not tile_active and neighbors_active == 2:
-            new_active_tiles.add(pa_tile)
-    return new_active_tiles
-
+def cycle(active_cubes):
+    potentially_active = get_potentially_active(active_cubes)
+    new_active_cubes = set()
+    for pa_cube in potentially_active:
+        cube_active = pa_cube in active_cubes
+        neighbors_active = count_active_neighbors(pa_cube)
+        if cube_active and neighbors_active in (1, 2):  # Changed from Day 17
+            new_active_cubes.add(pa_cube)
+        elif not cube_active and neighbors_active == 2:  # Changed from Day 17
+            new_active_cubes.add(pa_cube)
+    return new_active_cubes
 
 
 for _ in range(100):
-    black_tiles = cycle(black_tiles)
-    print(len(black_tiles))
+    active_cubes = cycle(active_cubes)
+
+print(f'Part 2: {len(active_cubes)}')
